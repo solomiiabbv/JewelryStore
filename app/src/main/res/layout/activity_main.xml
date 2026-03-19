@@ -1,47 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="#FFFFFF">
 
     <TextView
-        android:id="@+id/tvWelcome"
+        android:id="@+id/tvGreeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ласкаво просимо в ювелірний магазин!"
+        android:text="Привіт!"
         android:textSize="20sp"
-        android:textColor="@android:color/black"
-        android:layout_gravity="center"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"/>
+        android:layout_marginBottom="20dp"/>
 
     <Button
-        android:id="@+id/btnManageProducts"
+        android:id="@+id/btnGoToLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Керування товарами"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/btnInfoList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Інформаційний список"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/btnProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Профіль адміністратора"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Вихід"
-        android:layout_marginTop="8dp"/>
+        android:text="Вхід / Реєстрація"/>
 </LinearLayout>
