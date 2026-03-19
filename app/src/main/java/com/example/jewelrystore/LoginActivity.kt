@@ -4,11 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 
 class LoginActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -16,21 +17,21 @@ class LoginActivity : AppCompatActivity() {
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnGoToRegister = findViewById<Button>(R.id.btnGoToRegister)
+        val btnGoRegister = findViewById<Button>(R.id.btnGoRegister)
+        val ivLogo = findViewById<ImageView>(R.id.ivLogo)
+        val tvGreeting = findViewById<TextView>(R.id.tvGreeting)
 
         btnLogin.setOnClickListener {
-            val username = etUsername.text.toString()
-            val password = etPassword.text.toString()
-
-            if (username == "admin" && password == "123456") {
-                startActivity(Intent(this, MainActivity::class.java))
-            } else {
-                Toast.makeText(this, "Невірний логін або пароль", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(this, "Увійшли", Toast.LENGTH_SHORT).show()
         }
 
-        btnGoToRegister.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+        btnGoRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        ivLogo.setOnClickListener {
+            Toast.makeText(this, "Ювелірний магазин", Toast.LENGTH_SHORT).show()
         }
     }
 }
