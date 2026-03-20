@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         btnLogout = findViewById(R.id.btnLogout)
 
         // Текст привітання
-        tvWelcome.text = "Ласкаво просимо в ювелірний магазин!"
+        tvWelcome.text = "Ласкаво просимо в наш ювелірний магазин!"
 
         // обробка кнопок
         btnManageProducts.setOnClickListener {
