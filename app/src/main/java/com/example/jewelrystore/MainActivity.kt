@@ -1,49 +1,48 @@
 package com.example.jewelrystore
 
-import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var tvWelcome: TextView
+    private lateinit var btnManageProducts: Button
+    private lateinit var btnInfoList: Button
+    private lateinit var btnProfile: Button
+    private lateinit var btnLogout: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val tvGreeting = findViewById<TextView>(R.id.tvGreeting)
-        val ivLogo = findViewById<ImageView>(R.id.ivLogo)
+        // знаходимо елементи через findViewById
+        tvWelcome = findViewById(R.id.tvWelcome)
+        btnManageProducts = findViewById(R.id.btnManageProducts)
+        btnInfoList = findViewById(R.id.btnInfoList)
+        btnProfile = findViewById(R.id.btnProfile)
+        btnLogout = findViewById(R.id.btnLogout)
 
-        val btnManageProducts = findViewById<Button>(R.id.btnManageProducts)
-        val btnInfoList = findViewById<Button>(R.id.btnInfoList)
-        val btnProfile = findViewById<Button>(R.id.btnProfile)
-        val btnLogout = findViewById<Button>(R.id.btnLogout)
+        // Текст привітання
+        tvWelcome.text = "Ласкаво просимо в наш ювелірний магазин!"
 
-        tvGreeting.text = "Привіт, Адміністратор!"
-
+        // обробка кнопок
         btnManageProducts.setOnClickListener {
-            Toast.makeText(this, "Керування товарами", Toast.LENGTH_SHORT).show()
-        }
-        btnInfoList.setOnClickListener {
-            Toast.makeText(this, "Інформаційний список", Toast.LENGTH_SHORT).show()
-        }
-        btnProfile.setOnClickListener {
-            Toast.makeText(this, "Профіль адміністратора", Toast.LENGTH_SHORT).show()
-        }
-        btnLogout.setOnClickListener {
-            // Очистка авторизації (SharedPreferences)
-            val pref = getSharedPreferences("auth", MODE_PRIVATE)
-            pref.edit().putBoolean("isAuthorized", false).apply()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            Toast.makeText(this, "Відкрито керування товарами", Toast.LENGTH_SHORT).show()
         }
 
-        ivLogo.setOnClickListener {
-            Toast.makeText(this, "Ювелірний магазин", Toast.LENGTH_SHORT).show()
+        btnInfoList.setOnClickListener {
+            Toast.makeText(this, "Відкрито інформаційний список", Toast.LENGTH_SHORT).show()
+        }
+
+        btnProfile.setOnClickListener {
+            Toast.makeText(this, "Відкрито профіль адміністратора", Toast.LENGTH_SHORT).show()
+        }
+
+        btnLogout.setOnClickListener {
+            Toast.makeText(this, "Вихід з системи", Toast.LENGTH_SHORT).show()
         }
     }
 }
