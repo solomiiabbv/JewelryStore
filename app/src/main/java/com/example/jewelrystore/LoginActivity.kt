@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 
@@ -17,7 +19,13 @@ class LoginActivity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
+        val tvGreeting = findViewById<TextView>(R.id.tvGreeting)
+        val ivLogo = findViewById<ImageView>(R.id.ivLogo)
 
+        // Відображаємо привітання
+        tvGreeting.text = "Привіт, користувач!"
+
+        // Перевірка авторизації
         val pref = getSharedPreferences("auth", MODE_PRIVATE)
         if(pref.getBoolean("isAuthorized", false)){
             startActivity(Intent(this, MainActivity::class.java))
@@ -27,7 +35,6 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString()
             val password = etPassword.text.toString()
-            // Простий локальний логін
             val savedUser = getSharedPreferences("user", MODE_PRIVATE)
             if(username == savedUser.getString("username", "") &&
                 password == savedUser.getString("password", "")){
@@ -41,6 +48,10 @@ class LoginActivity : AppCompatActivity() {
 
         btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        ivLogo.setOnClickListener {
+            Toast.makeText(this, "Ювелірний магазин", Toast.LENGTH_SHORT).show()
         }
     }
 }
