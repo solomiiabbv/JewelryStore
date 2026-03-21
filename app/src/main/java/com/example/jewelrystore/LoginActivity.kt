@@ -18,9 +18,10 @@ class LoginActivity : AppCompatActivity() {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
 
-        val pref = getSharedPreferences("auth", MODE_PRIVATE)
-        // Перевірка, чи вже авторизований
-        if (pref.getBoolean("isAuthorized", false)) {
+        val authPref = getSharedPreferences("auth", MODE_PRIVATE)
+
+        // Якщо користувач вже авторизований, йдемо відразу на MainActivity
+        if (authPref.getBoolean("isAuthorized", false)) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -28,12 +29,21 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString()
             val password = etPassword.text.toString()
-            val savedUser = getSharedPreferences("user", MODE_PRIVATE)
 
-            if (username == savedUser.getString("username", "") &&
-                password == savedUser.getString("password", "")) {
-                pref.edit().putBoolean("isAuthorized", true).apply()
-                startActivity(Intent(this, MainActivity::class.java))
+            val userPref = getSharedPreferences("user", MODE_PRIVATE)
+
+            // Логін за username, а не email
+            val savedUsername = userPref.getString("username", "")
+            val savedPassword = userPref.getString("password", "")
+
+            if (username == savedUsername && password == savedPassword) {
+                // Зберігаємо прапорець авторизації
+                authPref.edit().putBoolean("isAuthorized", true).apply()
+
+                val intent = Intent(this, MainActivity::class.java)
+                // Передаємо ім'я користувача для привітання
+                intent.putExtra("firstName", userPref.getString("firstName", "Адміністратор"))
+                startActivity(intent)
                 finish()
             } else {
                 Toast.makeText(this, "Невірний логін або пароль", Toast.LENGTH_SHORT).show()

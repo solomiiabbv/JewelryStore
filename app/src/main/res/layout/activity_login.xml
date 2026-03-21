@@ -22,7 +22,7 @@
             android:id="@+id/tvGreeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ласкаво просимо!"
+            android:text="Jewelry store, ласкаво просимо!"
             android:textSize="20sp"
             android:textColor="#FFD700"
             android:layout_marginBottom="24dp"/>
@@ -58,7 +58,7 @@
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Реєстрація"
+            android:text=" Ще не реєструвалися? Реєстрація"
             android:backgroundTint="#CCCCCC"
             android:textColor="#000000"/>
 
