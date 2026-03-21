@@ -1,30 +1,25 @@
 package com.example.jewelrystore
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 
 class LoginActivity : AppCompatActivity() {
-
-    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        sharedPref = getSharedPreferences("jewelry_store_pref", MODE_PRIVATE)
-
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnGoRegister = findViewById<Button>(R.id.btnGoRegister)
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
 
-        // Якщо вже авторизований
-        if (sharedPref.getBoolean("isAuthorized", false)) {
+        val pref = getSharedPreferences("auth", MODE_PRIVATE)
+        if(pref.getBoolean("isAuthorized", false)){
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -32,11 +27,11 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString()
             val password = etPassword.text.toString()
-            val savedUsername = sharedPref.getString("username", "")
-            val savedPassword = sharedPref.getString("password", "")
-
-            if (username == savedUsername && password == savedPassword) {
-                sharedPref.edit().putBoolean("isAuthorized", true).apply()
+            // Простий локальний логін
+            val savedUser = getSharedPreferences("user", MODE_PRIVATE)
+            if(username == savedUser.getString("username", "") &&
+                password == savedUser.getString("password", "")){
+                pref.edit().putBoolean("isAuthorized", true).apply()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
@@ -44,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        btnGoRegister.setOnClickListener {
+        btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
