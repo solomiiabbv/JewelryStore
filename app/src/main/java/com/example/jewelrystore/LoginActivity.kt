@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -20,14 +19,13 @@ class LoginActivity : AppCompatActivity() {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val tvGreeting = findViewById<TextView>(R.id.tvGreeting)
-        val ivLogo = findViewById<ImageView>(R.id.ivLogo)
 
-        // Відображаємо привітання
-        tvGreeting.text = "Привіт, користувач!"
+        tvGreeting.text = "Вітаємо! Будь ласка, увійдіть або зареєструйтесь."
 
         // Перевірка авторизації
         val pref = getSharedPreferences("auth", MODE_PRIVATE)
-        if(pref.getBoolean("isAuthorized", false)){
+        if (pref.getBoolean("isAuthorized", false)) {
+            // Якщо користувач вже авторизований, переходимо в MainActivity
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -35,10 +33,12 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString()
             val password = etPassword.text.toString()
+
             val savedUser = getSharedPreferences("user", MODE_PRIVATE)
-            if(username == savedUser.getString("username", "") &&
-                password == savedUser.getString("password", "")){
-                pref.edit().putBoolean("isAuthorized", true).apply()
+            if (username == savedUser.getString("username", "") &&
+                password == savedUser.getString("password", "")
+            ) {
+                pref.edit().putBoolean("isAuthorized", true).commit() // commit() гарантує збереження
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
@@ -48,10 +48,6 @@ class LoginActivity : AppCompatActivity() {
 
         btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
-        }
-
-        ivLogo.setOnClickListener {
-            Toast.makeText(this, "Ювелірний магазин", Toast.LENGTH_SHORT).show()
         }
     }
 }
