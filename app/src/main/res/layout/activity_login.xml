@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:id="@+id/tvGreeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Привіт, Адміністратор!"
+            android:text="Ласкаво просимо!"
             android:textSize="20sp"
             android:textColor="#FFD700"
             android:layout_marginBottom="24dp"/>
@@ -50,17 +50,18 @@
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Вхід"
+            android:text="Увійти"
             android:backgroundTint="#FFD700"
             android:textColor="#000000"
             android:layout_marginBottom="16dp"/>
 
         <Button
-            android:id="@+id/btnRegister"
+            android:id="@+id/btnGoRegister"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="Реєстрація"
             android:backgroundTint="#CCCCCC"
             android:textColor="#000000"/>
+
     </LinearLayout>
 </ScrollView>
