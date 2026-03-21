@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#FFFFFF"
     android:padding="24dp">
 
     <LinearLayout
@@ -11,45 +11,40 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+        <!-- Логотип -->
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_store"
             android:contentDescription="Логотип магазину"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Привітання -->
         <TextView
+            android:id="@+id/tvGreeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Реєстрація нового користувача"
-            android:textSize="22sp"
-            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textColor="#FFD700"
             android:layout_marginBottom="24dp"/>
 
+        <!-- Поля для реєстрації -->
         <EditText
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:hint="Логін"
             android:inputType="text"
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
         <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="Пароль"
-            android:inputType="textPassword"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp"/>
-
-        <EditText
             android:id="@+id/etFirstName"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="Ім'я"
+            android:layout_height="48dp"
+            android:hint="Ім’я"
             android:inputType="textPersonName"
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
@@ -57,27 +52,56 @@
         <EditText
             android:id="@+id/etLastName"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:hint="Прізвище"
             android:inputType="textPersonName"
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/etPassword"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
+            android:layout_height="48dp"
+            android:hint="Пароль"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Підтвердження пароля"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etBirthday"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Дата народження"
+            android:focusable="false"
+            android:clickable="true"
             android:padding="12dp"
             android:layout_marginBottom="24dp"/>
 
+        <!-- Кнопки -->
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:text="Зареєструватися"
-            android:backgroundTint="@color/black"
-            android:textColor="@color/white"/>
+            android:backgroundTint="#FFD700"
+            android:textColor="#000000"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnGoLogin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Вхід"
+            android:backgroundTint="#CCCCCC"
+            android:textColor="#000000"/>
     </LinearLayout>
 </ScrollView>

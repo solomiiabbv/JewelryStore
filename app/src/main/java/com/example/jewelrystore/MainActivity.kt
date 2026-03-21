@@ -22,7 +22,10 @@ class MainActivity : AppCompatActivity() {
         val btnProfile = findViewById<Button>(R.id.btnProfile)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
-        tvGreeting.text = "Привіт, Адміністратор!"
+        // Отримуємо ім’я з реєстрації
+        val userPref = getSharedPreferences("user", MODE_PRIVATE)
+        val firstName = userPref.getString("firstName", "Адміністратор")
+        tvGreeting.text = "Привіт, $firstName!"
 
         btnManageProducts.setOnClickListener {
             Toast.makeText(this, "Керування товарами", Toast.LENGTH_SHORT).show()
@@ -33,13 +36,10 @@ class MainActivity : AppCompatActivity() {
         btnProfile.setOnClickListener {
             Toast.makeText(this, "Профіль адміністратора", Toast.LENGTH_SHORT).show()
         }
-
         btnLogout.setOnClickListener {
-            // Очистка авторизації (SharedPreferences)
             val pref = getSharedPreferences("auth", MODE_PRIVATE)
-            pref.edit().putBoolean("isAuthorized", false).commit() // commit() одразу зберігає
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            pref.edit().putBoolean("isAuthorized", false).apply()
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 
