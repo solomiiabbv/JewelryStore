@@ -27,15 +27,23 @@ class MainActivity : AppCompatActivity() {
         val firstName = userPref.getString("firstName", "Адміністратор")
         tvGreeting.text = "Привіт, $firstName!"
 
+        // Відкриваємо список товарів
         btnManageProducts.setOnClickListener {
-            Toast.makeText(this, "Керування товарами", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ProductsActivity::class.java)
+            startActivity(intent)
         }
+
+        // Інформаційний список (поки залишимо Toast)
         btnInfoList.setOnClickListener {
             Toast.makeText(this, "Інформаційний список", Toast.LENGTH_SHORT).show()
         }
+
+        // Профіль адміністратора (можна потім зробити окремий Activity)
         btnProfile.setOnClickListener {
             Toast.makeText(this, "Профіль адміністратора", Toast.LENGTH_SHORT).show()
         }
+
+        // Вихід
         btnLogout.setOnClickListener {
             val pref = getSharedPreferences("auth", MODE_PRIVATE)
             pref.edit().putBoolean("isAuthorized", false).apply()

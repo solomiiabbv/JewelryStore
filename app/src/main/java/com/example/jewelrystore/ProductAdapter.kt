@@ -7,13 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ProductAdapter(
-    private val list: MutableList<Product>,
-    private val onClick: (Product) -> Unit
+    private val products: List<Product>,
+    private val clickListener: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvName: TextView = view.findViewById(R.id.tvName)
-        val tvPrice: TextView = view.findViewById(R.id.tvPrice)
+    inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvName: TextView = itemView.findViewById(R.id.tvProductName)
+        val tvPrice: TextView = itemView.findViewById(R.id.tvProductPrice)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -22,15 +22,12 @@ class ProductAdapter(
         return ProductViewHolder(view)
     }
 
-    override fun getItemCount(): Int = list.size
-
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product = list[position]
+        val product = products[position]
         holder.tvName.text = product.name
         holder.tvPrice.text = "${product.price} грн"
-
-        holder.itemView.setOnClickListener {
-            onClick(product)
-        }
+        holder.itemView.setOnClickListener { clickListener(product) }
     }
+
+    override fun getItemCount(): Int = products.size
 }

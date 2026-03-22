@@ -60,9 +60,15 @@ class RegisterActivity : AppCompatActivity() {
             val password = etPassword.text.toString()
             val confirmPassword = etConfirmPassword.text.toString()
 
-            if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty() ||
-                birthday.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
+            if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
+                username.isEmpty() || birthday.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
                 Toast.makeText(this, "Заповніть усі поля", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Перевірка email на правильний формат
+            if(!email.endsWith("@")){
+                Toast.makeText(this, "Email повинен містити правильний формат (@gmail.com)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JewelryStore">
 
-        <!-- Екран логіну - перший, що запускається -->
+        <!-- Екран логіну -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -30,6 +30,11 @@
         <!-- Екран реєстрації -->
         <activity
             android:name=".RegisterActivity"
+            android:exported="true"/>
+
+        <!-- Stage 4: Екран списку товарів -->
+        <activity
+            android:name=".ProductsActivity"
             android:exported="true"/>
 
     </application>
