@@ -13,6 +13,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        // Пошук елементів
         val etFirstName = findViewById<EditText>(R.id.etFirstName)
         val etLastName = findViewById<EditText>(R.id.etLastName)
         val etEmail = findViewById<EditText>(R.id.etEmail)
@@ -25,6 +26,7 @@ class RegisterActivity : AppCompatActivity() {
         val btnGoLogin = findViewById<Button>(R.id.btnGoLogin)
         val ivLogo = findViewById<ImageView>(R.id.ivLogo)
 
+        // Логотип
         ivLogo.setOnClickListener {
             Toast.makeText(this, "Ювелірний магазин", Toast.LENGTH_SHORT).show()
         }
@@ -52,27 +54,30 @@ class RegisterActivity : AppCompatActivity() {
 
         // Реєстрація
         btnRegister.setOnClickListener {
-            val firstName = etFirstName.text.toString()
-            val lastName = etLastName.text.toString()
-            val email = etEmail.text.toString()
-            val username = etUsername.text.toString()
-            val birthday = etBirthday.text.toString()
+            val firstName = etFirstName.text.toString().trim()
+            val lastName = etLastName.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+            val username = etUsername.text.toString().trim()
+            val birthday = etBirthday.text.toString().trim()
             val password = etPassword.text.toString()
             val confirmPassword = etConfirmPassword.text.toString()
 
-            if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
-                username.isEmpty() || birthday.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
+            // Перевірка на заповненість полів
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
+                username.isEmpty() || birthday.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()
+            ) {
                 Toast.makeText(this, "Заповніть усі поля", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Перевірка email на правильний формат
-            if(!email.endsWith("@")){
+            // Перевірка email на формат gmail
+            if (!email.endsWith("@gmail.com")) {
                 Toast.makeText(this, "Email повинен містити правильний формат (@gmail.com)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if(password != confirmPassword){
+            // Перевірка пароля
+            if (password != confirmPassword) {
                 Toast.makeText(this, "Паролі не співпадають", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -89,6 +94,8 @@ class RegisterActivity : AppCompatActivity() {
             }.apply()
 
             Toast.makeText(this, "Реєстрація успішна", Toast.LENGTH_SHORT).show()
+
+            // Повертаємо на екран логіну
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
