@@ -7,13 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ProductAdapter(private val products: List<Product>) :
+class ProductAdapter(private val productList: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivProduct: ImageView = itemView.findViewById(R.id.ivProduct)
-        val tvProductName: TextView = itemView.findViewById(R.id.tvProductName)
-        val tvProductPrice: TextView = itemView.findViewById(R.id.tvProductPrice)
+        val tvName: TextView = itemView.findViewById(R.id.tvName)
+        val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -22,12 +22,12 @@ class ProductAdapter(private val products: List<Product>) :
         return ProductViewHolder(view)
     }
 
-    override fun getItemCount(): Int = products.size
-
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product = products[position]
-        holder.tvProductName.text = product.name
-        holder.tvProductPrice.text = product.price
+        val product = productList[position]
         holder.ivProduct.setImageResource(product.imageResId)
+        holder.tvName.text = product.name
+        holder.tvPrice.text = product.price
     }
+
+    override fun getItemCount(): Int = productList.size
 }
