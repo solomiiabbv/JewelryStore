@@ -12,6 +12,7 @@
         android:text="Список товарів"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="12dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
