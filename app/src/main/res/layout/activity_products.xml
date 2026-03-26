@@ -1,16 +1,29 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <!-- Кнопка закриття зверху -->
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="12dp"
+    android:src="@drawable/ic_close"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:contentDescription="Закрити"/>
+
+    <!-- RecyclerView для товарів -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"/>
 
+    <!-- Кнопка Додати товар -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"

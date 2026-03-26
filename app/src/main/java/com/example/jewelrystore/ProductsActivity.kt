@@ -16,7 +16,7 @@ class ProductsActivity : AppCompatActivity() {
 
     private val productList = mutableListOf<Product>()
     private lateinit var adapter: ProductAdapter
-    private var selectedImageResId = R.drawable.gold_ring // дефолтна картинка
+    private var selectedImageResId = R.drawable.gold_ring // default image
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,20 +24,29 @@ class ProductsActivity : AppCompatActivity() {
 
         val rvProducts = findViewById<RecyclerView>(R.id.rvProducts)
         val btnClose = findViewById<ImageButton>(R.id.btnClose)
-        val btnAdd = findViewById<Button>(R.id.btnAdd) // кнопка додати товар
+        val btnAdd = findViewById<Button>(R.id.btnAdd)
 
-        // Додаємо стартові товари
+        // Make Add button yellow
+        btnAdd.setBackgroundColor(resources.getColor(android.R.color.holo_orange_light))
+        btnAdd.setTextColor(resources.getColor(android.R.color.white))
+
+        // Add initial products (translated to English)
         productList.addAll(
             listOf(
-                Product("Золоте кільце", "1200 грн", R.drawable.gold_ring, "Кільця", "5 г", "Золото", "Жіноча", "16"),
-                Product("Срібний браслет", "800 грн", R.drawable.silver_bracelet, "Браслети", "7 г", "Срібло", "Жіноча", "-"),
-                Product("Сережки з перлами", "950 грн", R.drawable.pearl_earrings, "Сережки", "3 г", "Срібло", "Жіноча", "-"),
-                Product("Кулон з діамантом", "8000 грн", R.drawable.diamond_pendant, "Кулони", "10 г", "Золото", "Жіноча", "-")
+                Product("Gold Ring", "$1200", R.drawable.gold_ring, "Rings", "5 g", "Gold", "Female", "16"),
+                Product("Silver Bracelet", "$800", R.drawable.silver_bracelet, "Bracelets", "7 g", "Silver", "Female", "-"),
+                Product("Pearl Earrings", "$950", R.drawable.pearl_earrings, "Earrings", "3 g", "Silver", "Female", "-"),
+                Product("Diamond Pendant", "$8000", R.drawable.diamond_pendant, "Pendants", "10 g", "Gold", "Female", "-"),
+                Product("Rose Brooch", "$450", R.drawable.rose_brooch, "Brooches", "2 g", "Silver", "Female", "-"),
+                Product("Men's Casio Watch", "$3500", R.drawable.mens_watch, "Watches", "50 g", "Metal", "Male", "-"),
+                Product("Women's Casio Watch", "$3200", R.drawable.womens_watch, "Watches", "45 g", "Metal", "Female", "-"),
+                Product("Stone Necklace", "$1800", R.drawable.stone_necklace, "Necklaces", "8 g", "Silver", "Female", "-"),
+                Product("Silver Ring", "$700", R.drawable.silver_ring, "Rings", "4 g", "Silver", "Female", "16"),
+                Product("Beaded Bracelet", "$650", R.drawable.beaded_bracelet, "Bracelets", "5 g", "Silver", "Female", "-")
             )
         )
 
         adapter = ProductAdapter(productList) { product ->
-            // Відкриття детальної інформації
             val intent = Intent(this, ProductDetailActivity::class.java)
             intent.putExtra("name", product.name)
             intent.putExtra("price", product.price)
@@ -52,10 +61,10 @@ class ProductsActivity : AppCompatActivity() {
         rvProducts.layoutManager = LinearLayoutManager(this)
         rvProducts.adapter = adapter
 
-        // Закриття активності
+        // Close activity
         btnClose.setOnClickListener { finish() }
 
-        // Додавання нового товару
+        // Add new product dialog
         btnAdd.setOnClickListener { showAddProductDialog() }
     }
 
@@ -71,15 +80,12 @@ class ProductsActivity : AppCompatActivity() {
         val etCategory = dialogView.findViewById<EditText>(R.id.etCategory)
         val ivSelectImage = dialogView.findViewById<ImageView>(R.id.ivSelectImage)
 
-        // Клік на картинку – залишимо дефолтну для початку
-        ivSelectImage.setOnClickListener {
-            // тут можна додати вибір картинки з галереї, якщо потрібно
-        }
+        ivSelectImage.setOnClickListener { }
 
         AlertDialog.Builder(this)
-            .setTitle("Додати товар")
+            .setTitle("Add Product")
             .setView(dialogView)
-            .setPositiveButton("Додати") { _, _ ->
+            .setPositiveButton("Add") { _, _ ->
                 val newProduct = Product(
                     name = etName.text.toString(),
                     price = etPrice.text.toString(),
@@ -93,7 +99,7 @@ class ProductsActivity : AppCompatActivity() {
                 productList.add(newProduct)
                 adapter.notifyItemInserted(productList.size - 1)
             }
-            .setNegativeButton("Відміна", null)
+            .setNegativeButton("Cancel", null)
             .show()
     }
 }
