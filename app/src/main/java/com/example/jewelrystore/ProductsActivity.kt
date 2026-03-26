@@ -2,6 +2,7 @@ package com.example.jewelrystore
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -22,51 +24,32 @@ class ProductsActivity : AppCompatActivity() {
     private val productList = mutableListOf<Product>()
     private lateinit var adapter: ProductAdapter
     private var selectedImageUri: Uri? = null
+    private lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
 
+        prefs = getSharedPreferences("products", MODE_PRIVATE)
+
+        val tvTitle: TextView = findViewById(R.id.tvTitle)
         val rvProducts: RecyclerView = findViewById(R.id.rvProducts)
         val btnClose: ImageButton = findViewById(R.id.btnClose)
         val btnAdd: Button = findViewById(R.id.btnAdd)
 
+        tvTitle.text = "Список товарів"
+
         // Перевірка прав
         checkPermissions()
 
-        // Додаємо стартові 10 товарів з drawable
-        productList.addAll(
-            listOf(
-                Product("Gold Ring", "1200 UAH", imageResId = R.drawable.gold_ring, category = "Rings", weight = "5 g", metal = "Gold", gender = "Female", size = "16"),
-                Product("Silver Bracelet", "800 UAH", imageResId = R.drawable.silver_bracelet, category = "Bracelets", weight = "7 g", metal = "Silver", gender = "Female", size = "-"),
-                Product("Pearl Earrings", "950 UAH", imageResId = R.drawable.pearl_earrings, category = "Earrings", weight = "3 g", metal = "Silver", gender = "Female", size = "-"),
-                Product("Diamond Pendant", "8000 UAH", imageResId = R.drawable.diamond_pendant, category = "Pendants", weight = "10 g", metal = "Gold", gender = "Female", size = "-"),
-                Product("Rose Brooch", "450 UAH", imageResId = R.drawable.rose_brooch, category = "Brooches", weight = "2 g", metal = "Silver", gender = "Female", size = "-"),
-                Product("Men's Watch Casio", "3500 UAH", imageResId = R.drawable.mens_watch, category = "Watches", weight = "50 g", metal = "Metal", gender = "Male", size = "-"),
-                Product("Women's Watch Casio", "3200 UAH", imageResId = R.drawable.womens_watch, category = "Watches", weight = "45 g", metal = "Metal", gender = "Female", size = "-"),
-                Product("Stone Necklace", "1800 UAH", imageResId = R.drawable.stone_necklace, category = "Necklaces", weight = "8 g", metal = "Silver", gender = "Female", size = "-"),
-                Product("Silver Ring", "700 UAH", imageResId = R.drawable.silver_ring, category = "Rings", weight = "4 g", metal = "Silver", gender = "Female", size = "16"),
-                Product("Beaded Bracelet", "650 UAH", imageResId = R.drawable.beaded_bracelet, category = "Bracelets", weight = "5 g", metal = "Silver", gender = "Female", size = "-")
-            )
-        )
+        // Завантаження стартових та збережених товарів
+        loadProducts()
 
-        // Adapter з click listener
         adapter = ProductAdapter(productList) { product ->
             val intent = Intent(this, ProductDetailActivity::class.java)
             intent.putExtra("name", product.name)
             intent.putExtra("price", product.price)
-            intent.putExtra("category", product.category)
-            intent.putExtra("weight", product.weight)
-            intent.putExtra("metal", product.metal)
-            intent.putExtra("gender", product.gender)
-            intent.putExtra("size", product.size)
-
-            // Відправляємо imageUri або imageResId
-            if (product.imageUri != null) {
-                intent.putExtra("imageUri", product.imageUri.toString())
-            } else if (product.imageResId != null) {
-                intent.putExtra("imageResId", product.imageResId)
-            }
+            intent.putExtra("imageUri", product.imageUri.toString())
             startActivity(intent)
         }
 
@@ -87,31 +70,31 @@ class ProductsActivity : AppCompatActivity() {
         ivSelectImage.setOnClickListener { showImageSourceOptions() }
 
         AlertDialog.Builder(this)
-            .setTitle("Add Product")
+            .setTitle("Додати товар")
             .setView(dialogView)
-            .setPositiveButton("Add") { _, _ ->
-                val newProduct = Product(
-                    name = etName.text.toString(),
-                    price = etPrice.text.toString(),
-                    imageUri = selectedImageUri,
-                    category = "Custom",
-                    weight = "-",
-                    metal = "-",
-                    gender = "-",
-                    size = "-"
-                )
-                productList.add(newProduct)
-                adapter.notifyItemInserted(productList.size - 1)
-                selectedImageUri = null
+            .setPositiveButton("Додати") { _, _ ->
+                if (etName.text.isNotEmpty() && etPrice.text.isNotEmpty()) {
+                    val newProduct = Product(
+                        etName.text.toString(),
+                        etPrice.text.toString(),
+                        selectedImageUri ?: Uri.parse("android.resource://${packageName}/${R.drawable.ic_launcher_foreground}")
+                    )
+                    productList.add(newProduct)
+                    adapter.notifyItemInserted(productList.size - 1)
+                    saveProducts() // збереження товарів
+                    selectedImageUri = null
+                } else {
+                    Toast.makeText(this, "Введіть назву та ціну", Toast.LENGTH_SHORT).show()
+                }
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton("Відмінити", null)
             .show()
     }
 
     private fun showImageSourceOptions() {
-        val options = arrayOf("Camera", "Gallery")
+        val options = arrayOf("Камера", "Галерея")
         AlertDialog.Builder(this)
-            .setTitle("Choose Image Source")
+            .setTitle("Оберіть джерело зображення")
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> openCamera()
@@ -121,13 +104,12 @@ class ProductsActivity : AppCompatActivity() {
     }
 
     private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val bitmap = result.data?.extras?.get("data") as Bitmap
-                val tempUri = Uri.parse(MediaStore.Images.Media.insertImage(contentResolver, bitmap, null, null))
-                selectedImageUri = tempUri
-                Toast.makeText(this, "Camera image selected", Toast.LENGTH_SHORT).show()
-            }
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->if (result.resultCode == Activity.RESULT_OK) {
+            val bitmap = result.data?.extras?.get("data") as Bitmap
+            val tempUri = Uri.parse(MediaStore.Images.Media.insertImage(contentResolver, bitmap, null, null))
+            selectedImageUri = tempUri
+            Toast.makeText(this, "Фото з камери вибране", Toast.LENGTH_SHORT).show()
+        }
         }
 
     private fun openCamera() {
@@ -139,7 +121,7 @@ class ProductsActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 selectedImageUri = uri
-                Toast.makeText(this, "Gallery image selected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Фото з галереї вибране", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -160,12 +142,54 @@ class ProductsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100) {
             if (grantResults.any { it != PackageManager.PERMISSION_GRANTED }) {
-                Toast.makeText(this, "Permissions required to select image", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Права потрібні для вибору фото", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+    // --- Збереження та завантаження товарів ---
+    private fun saveProducts() {
+        val editor = prefs.edit()
+        val set = productList.map { "${it.name}||${it.price}||${it.imageUri}" }.toSet()
+        editor.putStringSet("products_set", set)
+        editor.apply()
+    }
+
+    private fun loadProducts() {
+        // Стартові 10 товарів
+        val startProducts = listOf(
+            Product("Gold Ring", "1200 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.gold_ring}")),
+            Product("Silver Bracelet", "800 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.silver_bracelet}")),
+            Product("Pearl Earrings", "950 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.pearl_earrings}")),
+            Product("Diamond Pendant", "8000 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.diamond_pendant}")),
+            Product("Rose Brooch", "450 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.rose_brooch}")),
+            Product("Men's Watch Casio", "3500 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.mens_watch}")),
+            Product("Women's Watch Casio", "3200 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.womens_watch}")),
+            Product("Stone Necklace", "1800 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.stone_necklace}")),
+            Product("Silver Ring", "700 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.silver_ring}")),
+            Product("Beaded Bracelet", "650 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.beaded_bracelet}"))
+        )
+        productList.addAll(startProducts)
+
+        // Завантаження доданих товарів
+        val set = prefs.getStringSet("products_set", emptySet()) ?: emptySet()
+        for (item in set) {
+            val parts = item.split("||")
+            if (parts.size >= 3) {
+                val name = parts[0]
+                val price = parts[1]
+                val uri = Uri.parse(parts[2])
+                productList.add(Product(name, price, uri))
+            }
+        }
+    }
+}
 }
