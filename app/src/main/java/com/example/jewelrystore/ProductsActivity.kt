@@ -200,7 +200,7 @@ class ProductsActivity : AppCompatActivity() {
                 "7 g",
                 "Silver",
                 "Female",
-                "-"
+                "onesize"
             ),
             Product(
                 "Pearl Earrings",
@@ -210,7 +210,7 @@ class ProductsActivity : AppCompatActivity() {
                 "3 g",
                 "Silver",
                 "Female",
-                "-"
+                "onesize"
             ),
             Product(
                 "Diamond Pendant",
@@ -220,7 +220,7 @@ class ProductsActivity : AppCompatActivity() {
                 "10 g",
                 "Gold",
                 "Female",
-                "-"
+                "onesize"
             ),
             Product(
                 "Rose Brooch",
@@ -230,7 +230,7 @@ class ProductsActivity : AppCompatActivity() {
                 "2 g",
                 "Silver",
                 "Female",
-                "-"
+                "onesize"
             ),
             Product(
                 "Men's Watch Casio",
@@ -240,7 +240,7 @@ class ProductsActivity : AppCompatActivity() {
                 "50 g",
                 "Metal",
                 "Male",
-                "-"
+                "onesize"
             ),
             Product(
                 "Women's Watch Casio",
@@ -250,7 +250,7 @@ class ProductsActivity : AppCompatActivity() {
                 "45 g",
                 "Metal",
                 "Female",
-                "-"
+                "onesize"
             ),
             Product(
                 "Stone Necklace",
@@ -260,7 +260,7 @@ class ProductsActivity : AppCompatActivity() {
                 "8 g",
                 "Silver",
                 "Female",
-                "-"
+                "onesize"
             ),
             Product(
                 "Silver Ring",
@@ -280,7 +280,7 @@ class ProductsActivity : AppCompatActivity() {
                 "5 g",
                 "Silver",
                 "Female",
-                "-"
+                "onesize"
             )
         )
 
