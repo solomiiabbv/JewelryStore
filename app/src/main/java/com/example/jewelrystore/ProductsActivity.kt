@@ -1,22 +1,34 @@
 package com.example.jewelrystore
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.widget.EditText
-import android.widget.ImageView
 
 class ProductsActivity : AppCompatActivity() {
 
     private val productList = mutableListOf<Product>()
     private lateinit var adapter: ProductAdapter
-    private var selectedImageResId = R.drawable.gold_ring // default image
+    private var selectedImageUri: Uri? = null // тепер зберігаємо Uri обраного фото
+
+    // Регістр для вибору файлу
+    private val selectImageLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                selectedImageUri = data?.data
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +38,11 @@ class ProductsActivity : AppCompatActivity() {
         val btnClose = findViewById<ImageButton>(R.id.btnClose)
         val btnAdd = findViewById<Button>(R.id.btnAdd)
 
-        // Make Add button yellow
+        // Жовта кнопка
         btnAdd.setBackgroundColor(resources.getColor(android.R.color.holo_orange_light))
         btnAdd.setTextColor(resources.getColor(android.R.color.white))
 
-        // Add initial products (translated to English)
+        // Початкові товари (англійська)
         productList.addAll(
             listOf(
                 Product("Gold Ring", "$1200", R.drawable.gold_ring, "Rings", "5 g", "Gold", "Female", "16"),
@@ -61,10 +73,7 @@ class ProductsActivity : AppCompatActivity() {
         rvProducts.layoutManager = LinearLayoutManager(this)
         rvProducts.adapter = adapter
 
-        // Close activity
         btnClose.setOnClickListener { finish() }
-
-        // Add new product dialog
         btnAdd.setOnClickListener { showAddProductDialog() }
     }
 
@@ -80,7 +89,14 @@ class ProductsActivity : AppCompatActivity() {
         val etCategory = dialogView.findViewById<EditText>(R.id.etCategory)
         val ivSelectImage = dialogView.findViewById<ImageView>(R.id.ivSelectImage)
 
-        ivSelectImage.setOnClickListener { }
+        // Клік по картинці – вибір фото з файлів
+        ivSelectImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                type = "image/*"
+                addCategory(Intent.CATEGORY_OPENABLE)
+            }
+            selectImageLauncher.launch(intent)
+        }
 
         AlertDialog.Builder(this)
             .setTitle("Add Product")
@@ -89,7 +105,7 @@ class ProductsActivity : AppCompatActivity() {
                 val newProduct = Product(
                     name = etName.text.toString(),
                     price = etPrice.text.toString(),
-                    imageResId = selectedImageResId,
+                    imageResId = selectedImageUri?.let { uri -> uriToResId(uri) } ?: R.drawable.gold_ring,
                     category = etCategory.text.toString(),
                     weight = etWeight.text.toString(),
                     metal = etMetal.text.toString(),
@@ -101,5 +117,11 @@ class ProductsActivity : AppCompatActivity() {
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    // Проста функція для використання Uri (якщо потрібно конвертувати у drawable, поки залишимо дефолт)
+    private fun uriToResId(uri: Uri): Int {
+        // Для простоти поки повертаємо дефолтне зображення
+        return R.drawable.gold_ring
     }
 }
