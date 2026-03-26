@@ -182,115 +182,111 @@ class ProductsActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val serializedList = prefs.getString(KEY_PRODUCTS, "")
 
-        if (serializedList.isNullOrEmpty()) {
-            // Додаємо стартові товари при першому запуску
-            productList.addAll(
-                listOf(
-                    Product(
-                        "Gold Ring",
-                        "1200 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.gold_ring}"),
-                        "Rings",
-                        "5 g",
-                        "Gold",
-                        "Female",
-                        "16"
-                    ),
-                    Product(
-                        "Silver Bracelet",
-                        "800 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.silver_bracelet}"),
-                        "Bracelets",
-                        "7 g",
-                        "Silver",
-                        "Female",
-                        "-"
-                    ),
-                    Product(
-                        "Pearl Earrings",
-                        "950 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.pearl_earrings}"),
-                        "Earrings",
-                        "3 g",
-                        "Silver",
-                        "Female",
-                        "-"
-                    ),
-                    Product(
-                        "Diamond Pendant",
-                        "8000 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.diamond_pendant}"),
-                        "Pendants",
-                        "10 g",
-                        "Gold",
-                        "Female",
-                        "-"
-                    ),
-                    Product(
-                        "Rose Brooch",
-                        "450 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.rose_brooch}"),
-                        "Brooches",
-                        "2 g",
-                        "Silver",
-                        "Female",
-                        "-"
-                    ),
-                    Product(
-                        "Men's Watch Casio",
-                        "3500 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.mens_watch}"),
-                        "Watches",
-                        "50 g",
-                        "Metal",
-                        "Male",
-                        "-"
-                    ),
-                    Product(
-                        "Women's Watch Casio",
-                        "3200 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.womens_watch}"),
-                        "Watches",
-                        "45 g",
-                        "Metal",
-                        "Female",
-                        "-"
-                    ),
-                    Product(
-                        "Stone Necklace",
-                        "1800 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.stone_necklace}"),
-                        "Necklaces",
-                        "8 g",
-                        "Silver",
-                        "Female",
-                        "-"
-                    ),
-                    Product(
-                        "Silver Ring",
-                        "700 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.silver_ring}"),
-                        "Rings",
-                        "4 g",
-                        "Silver",
-                        "Female",
-                        "16"
-                    ),
-                    Product(
-                        "Beaded Bracelet",
-                        "650 UAH",
-                        Uri.parse("android.resource://${packageName}/${R.drawable.beaded_bracelet}"),
-                        "Bracelets",
-                        "5 g",
-                        "Silver",
-                        "Female",
-                        "-"
-                    )
-                )
+        val startProducts = listOf(
+            Product(
+                "Gold Ring",
+                "1200 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.gold_ring}"),
+                "Rings",
+                "5 g",
+                "Gold",
+                "Female",
+                "16"
+            ),
+            Product(
+                "Silver Bracelet",
+                "800 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.silver_bracelet}"),
+                "Bracelets",
+                "7 g",
+                "Silver",
+                "Female",
+                "-"
+            ),
+            Product(
+                "Pearl Earrings",
+                "950 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.pearl_earrings}"),
+                "Earrings",
+                "3 g",
+                "Silver",
+                "Female",
+                "-"
+            ),
+            Product(
+                "Diamond Pendant",
+                "8000 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.diamond_pendant}"),
+                "Pendants",
+                "10 g",
+                "Gold",
+                "Female",
+                "-"
+            ),
+            Product(
+                "Rose Brooch",
+                "450 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.rose_brooch}"),
+                "Brooches",
+                "2 g",
+                "Silver",
+                "Female",
+                "-"
+            ),
+            Product(
+                "Men's Watch Casio",
+                "3500 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.mens_watch}"),
+                "Watches",
+                "50 g",
+                "Metal",
+                "Male",
+                "-"
+            ),
+            Product(
+                "Women's Watch Casio",
+                "3200 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.womens_watch}"),
+                "Watches",
+                "45 g",
+                "Metal",
+                "Female",
+                "-"
+            ),
+            Product(
+                "Stone Necklace",
+                "1800 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.stone_necklace}"),
+                "Necklaces",
+                "8 g",
+                "Silver",
+                "Female",
+                "-"
+            ),
+            Product(
+                "Silver Ring",
+                "700 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.silver_ring}"),
+                "Rings",
+                "4 g",
+                "Silver",
+                "Female",
+                "16"
+            ),
+            Product(
+                "Beaded Bracelet",
+                "650 UAH",
+                Uri.parse("android.resource://${packageName}/${R.drawable.beaded_bracelet}"),
+                "Bracelets",
+                "5 g",
+                "Silver",
+                "Female",
+                "-"
             )
-            saveProducts() // зберігаємо стартові товари
-        } else {
-            // Завантажуємо всі товари з SharedPreferences
+        )
+
+        if (!serializedList.isNullOrEmpty()) {
+            // Завантажуємо товари з SharedPreferences
             val items = serializedList.split(";;")
             for (item in items) {
                 val parts = item.split("|")
@@ -309,6 +305,19 @@ class ProductsActivity : AppCompatActivity() {
                     )
                 }
             }
+
+            // Перевіряємо, чи стартові товари вже є, якщо ні — додаємо
+            val existingNames = productList.map { it.name }
+            startProducts.forEach { product ->
+                if (!existingNames.contains(product.name)) {
+                    productList.add(product)
+                }
+            }
+            saveProducts() // зберігаємо повний список
+        } else {
+            // SharedPreferences пустий — зберігаємо стартові товари
+            productList.addAll(startProducts)
+            saveProducts()
         }
     }
 }
