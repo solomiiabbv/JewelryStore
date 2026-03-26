@@ -11,18 +11,22 @@
 
         <ImageButton
             android:id="@+id/btnClose"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="end"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_close"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Закрити"/>
+            android:contentDescription="Закрити"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"/>
 
         <ImageView
-            android:id="@+id/ivProduct"
-            android:layout_width="match_parent"
+            android:id="@+id/ivProductDetail"
+            android:layout_width="200dp"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"/>
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:src="@drawable/gold_ring"
+            android:contentDescription="Фото товару"
+            android:layout_marginTop="16dp"/>
 
         <TextView android:id="@+id/tvName"
             android:layout_width="wrap_content"
