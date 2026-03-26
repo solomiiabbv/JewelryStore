@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Назва списку -->
+    <!-- Кнопка закриття зверху по центру -->
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_close"
+        android:contentDescription="Close"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- Назва списку товарів -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -12,30 +27,18 @@
         android:text="Список товарів"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
-
-    <!-- Кнопка закриття трохи нижче -->
-    <ImageButton
-        android:id="@+id/btnClose"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_close"
-        android:contentDescription="Close"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"/>
 
     <!-- RecyclerView для товарів -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/tvTitle"
-        android:layout_above="@+id/btnAdd"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"/>
 
-    <!-- Кнопка Додати товар жовта -->
+    <!-- Кнопка Додати товар -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"
@@ -44,6 +47,6 @@
         android:backgroundTint="#FFD700"
         android:textColor="@android:color/black"
         android:padding="12dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"/>
-</RelativeLayout>
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"/>
+</LinearLayout>

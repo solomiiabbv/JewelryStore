@@ -156,7 +156,6 @@ class ProductsActivity : AppCompatActivity() {
             requestPermissions(permissions.toTypedArray(), 100)
         }
     }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
