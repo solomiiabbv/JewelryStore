@@ -1,47 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#FFFFFF">
+    android:padding="16dp">
 
-    <!-- Верхній рядок: Назва + Кнопка назад -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Назва списку -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:text="Список товарів"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"/>
 
-        <ImageButton
-            android:id="@+id/btnClose"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_close"
-            android:contentDescription="Назад"/>
-
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Список товарів"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:padding="8dp"/>
-    </LinearLayout>
+    <!-- Кнопка закриття -->
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_close"
+        android:contentDescription="Close"/>
 
     <!-- RecyclerView для товарів -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="8dp"
-        android:clipToPadding="false" />
+        android:layout_below="@id/tvTitle"
+        android:layout_above="@+id/btnAdd"
+        android:layout_marginTop="16dp"/>
 
     <!-- Кнопка Додати товар -->
     <Button
@@ -49,8 +40,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Додати товар"
-        android:background="#FFD700"
-        android:textColor="#000000"
-        android:layout_marginTop="8dp"
-        android:padding="12dp"/>
-</LinearLayout>
+        android:backgroundTint="#FFD700"
+    android:textColor="@android:color/black"
+    android:padding="12dp"
+    android:layout_alignParentBottom="true"
+    android:layout_marginTop="16dp"/>
+
+</RelativeLayout>

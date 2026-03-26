@@ -15,9 +15,9 @@ class ProductDetailActivity : AppCompatActivity() {
 
         val btnClose = findViewById<ImageButton>(R.id.btnClose)
         val ivProduct = findViewById<ImageView>(R.id.ivProductDetail)
-
         val tvName = findViewById<TextView>(R.id.tvName)
         val tvPrice = findViewById<TextView>(R.id.tvPrice)
+        val tvCategory = findViewById<TextView>(R.id.tvCategory)
         val tvWeight = findViewById<TextView>(R.id.tvWeight)
         val tvMetal = findViewById<TextView>(R.id.tvMetal)
         val tvGender = findViewById<TextView>(R.id.tvGender)
@@ -25,22 +25,15 @@ class ProductDetailActivity : AppCompatActivity() {
 
         tvName.text = intent.getStringExtra("name")
         tvPrice.text = intent.getStringExtra("price")
-        tvWeight.text = "Weight: " + intent.getStringExtra("weight")
-        tvMetal.text = "Metal: " + intent.getStringExtra("metal")
-        tvGender.text = "Gender: " + intent.getStringExtra("gender")
-        tvSize.text = "Size: " + intent.getStringExtra("size")
+        tvCategory.text = intent.getStringExtra("category")
+        tvWeight.text = intent.getStringExtra("weight")
+        tvMetal.text = intent.getStringExtra("metal")
+        tvGender.text = intent.getStringExtra("gender")
+        tvSize.text = intent.getStringExtra("size")
 
-        // Показуємо картинку
         val imageUriString = intent.getStringExtra("imageUri")
-        val imageResId = intent.getIntExtra("imageResId", 0)
-
-        if (imageUriString != null) {
-            ivProduct.setImageURI(Uri.parse(imageUriString))
-        } else if (imageResId != 0) {
-            ivProduct.setImageResource(imageResId)
-        } else {
-            ivProduct.setImageResource(R.drawable.ic_launcher_foreground)
-        }
+        if (imageUriString != null) ivProduct.setImageURI(Uri.parse(imageUriString))
+        else ivProduct.setImageResource(R.drawable.ic_launcher_foreground)
 
         btnClose.setOnClickListener { finish() }
     }
