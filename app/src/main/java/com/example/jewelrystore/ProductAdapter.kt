@@ -8,14 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ProductAdapter(
-    private val products: List<Product>,
+    private val productList: List<Product>,
     private val onItemClick: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val ivProduct: ImageView = view.findViewById(R.id.ivProduct)
-        val tvName: TextView = view.findViewById(R.id.tvName)
-        val tvPrice: TextView = view.findViewById(R.id.tvPrice)
+    inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val ivProduct: ImageView = itemView.findViewById(R.id.ivProduct)
+        val tvName: TextView = itemView.findViewById(R.id.tvName)
+        val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -25,16 +25,13 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product = products[position]
-
+        val product = productList[position]
         holder.ivProduct.setImageResource(product.imageResId)
         holder.tvName.text = product.name
         holder.tvPrice.text = product.price
 
-        holder.itemView.setOnClickListener {
-            onItemClick(product)
-        }
+        holder.itemView.setOnClickListener { onItemClick(product) }
     }
 
-    override fun getItemCount(): Int = products.size
+    override fun getItemCount(): Int = productList.size
 }
