@@ -15,26 +15,42 @@ class ProductDetailActivity : AppCompatActivity() {
 
         val btnClose = findViewById<ImageButton>(R.id.btnClose)
         val ivProduct = findViewById<ImageView>(R.id.ivProductDetail)
+
         val tvName = findViewById<TextView>(R.id.tvName)
         val tvPrice = findViewById<TextView>(R.id.tvPrice)
-        val tvCategory = findViewById<TextView>(R.id.tvCategory)
         val tvWeight = findViewById<TextView>(R.id.tvWeight)
         val tvMetal = findViewById<TextView>(R.id.tvMetal)
         val tvGender = findViewById<TextView>(R.id.tvGender)
         val tvSize = findViewById<TextView>(R.id.tvSize)
+        val tvCategory = findViewById<TextView>(R.id.tvCategory)
 
-        tvName.text = intent.getStringExtra("name")
-        tvPrice.text = intent.getStringExtra("price")
-        tvCategory.text = intent.getStringExtra("category")
-        tvWeight.text = intent.getStringExtra("weight")
-        tvMetal.text = intent.getStringExtra("metal")
-        tvGender.text = intent.getStringExtra("gender")
-        tvSize.text = intent.getStringExtra("size")
-
+        // Отримуємо дані з Intent
+        val name = intent.getStringExtra("name") ?: "-"
+        val price = intent.getStringExtra("price") ?: "-"
+        val weight = intent.getStringExtra("weight") ?: "-"
+        val metal = intent.getStringExtra("metal") ?: "-"
+        val gender = intent.getStringExtra("gender") ?: "-"
+        val size = intent.getStringExtra("size") ?: "-"
+        val category = intent.getStringExtra("category") ?: "-"
         val imageUriString = intent.getStringExtra("imageUri")
-        if (imageUriString != null) ivProduct.setImageURI(Uri.parse(imageUriString))
-        else ivProduct.setImageResource(R.drawable.ic_launcher_foreground)
 
+        // Встановлюємо текст з підписами
+        tvName.text = name
+        tvPrice.text = price
+        tvWeight.text = "Weight: $weight"
+        tvMetal.text = "Metal: $metal"
+        tvGender.text = "Gender: $gender"
+        tvSize.text = "Size: $size"
+        tvCategory.text = "Category: $category"
+
+        // Показуємо картинку
+        if (!imageUriString.isNullOrEmpty()) {
+            ivProduct.setImageURI(Uri.parse(imageUriString))
+        } else {
+            ivProduct.setImageResource(R.drawable.ic_launcher_foreground)
+        }
+
+        // Кнопка назад
         btnClose.setOnClickListener { finish() }
     }
 }

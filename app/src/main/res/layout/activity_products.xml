@@ -14,13 +14,13 @@
         android:textStyle="bold"
         android:layout_centerHorizontal="true"/>
 
-    <!-- Кнопка закриття -->
+    <!-- Кнопка закриття трохи нижче -->
     <ImageButton
         android:id="@+id/btnClose"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_close"
         android:contentDescription="Close"/>
@@ -32,18 +32,18 @@
         android:layout_height="0dp"
         android:layout_below="@id/tvTitle"
         android:layout_above="@+id/btnAdd"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
 
-    <!-- Кнопка Додати товар -->
+    <!-- Кнопка Додати товар жовта -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Додати товар"
         android:backgroundTint="#FFD700"
-    android:textColor="@android:color/black"
-    android:padding="12dp"
-    android:layout_alignParentBottom="true"
-    android:layout_marginTop="16dp"/>
-
+        android:textColor="@android:color/black"
+        android:padding="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"/>
 </RelativeLayout>
