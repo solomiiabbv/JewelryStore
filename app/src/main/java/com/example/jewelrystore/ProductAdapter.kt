@@ -1,6 +1,5 @@
 package com.example.jewelrystore
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,9 @@ class ProductAdapter(
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val ivImage: ImageView = itemView.findViewById(R.id.ivImage)
         val tvName: TextView = itemView.findViewById(R.id.tvName)
         val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
-        val ivImage: ImageView = itemView.findViewById(R.id.ivImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -25,20 +24,23 @@ class ProductAdapter(
         return ProductViewHolder(view)
     }
 
+    override fun getItemCount(): Int = products.size
+
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = products[position]
         holder.tvName.text = product.name
         holder.tvPrice.text = product.price
 
-        when (val img = product.image) {
-            is Uri -> holder.ivImage.setImageURI(img)
-            is Int -> holder.ivImage.setImageResource(img)
+        if (product.imageUri != null) {
+            holder.ivImage.setImageURI(product.imageUri)
+        } else if (product.imageResId != null) {
+            holder.ivImage.setImageResource(product.imageResId)
+        } else {
+            holder.ivImage.setImageResource(R.drawable.ic_launcher_foreground)
         }
 
         holder.itemView.setOnClickListener {
             onItemClick(product)
         }
     }
-
-    override fun getItemCount(): Int = products.size
 }

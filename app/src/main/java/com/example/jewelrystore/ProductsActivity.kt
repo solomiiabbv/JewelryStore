@@ -34,27 +34,39 @@ class ProductsActivity : AppCompatActivity() {
         // Перевірка прав
         checkPermissions()
 
-        // Додаємо стартові 10 товарів
+        // Додаємо стартові 10 товарів з drawable
         productList.addAll(
             listOf(
-                Product("Gold Ring", "1200 UAH", R.drawable.gold_ring),
-                Product("Silver Bracelet", "800 UAH", R.drawable.silver_bracelet),
-                Product("Pearl Earrings", "950 UAH", R.drawable.pearl_earrings),
-                Product("Diamond Pendant", "8000 UAH", R.drawable.diamond_pendant),
-                Product("Rose Brooch", "450 UAH", R.drawable.rose_brooch),
-                Product("Men's Watch Casio", "3500 UAH", R.drawable.mens_watch),
-                Product("Women's Watch Casio", "3200 UAH", R.drawable.womens_watch),
-                Product("Stone Necklace", "1800 UAH", R.drawable.stone_necklace),
-                Product("Silver Ring", "700 UAH", R.drawable.silver_ring),
-                Product("Beaded Bracelet", "650 UAH", R.drawable.beaded_bracelet)
+                Product("Gold Ring", "1200 UAH", imageResId = R.drawable.gold_ring, category = "Rings", weight = "5 g", metal = "Gold", gender = "Female", size = "16"),
+                Product("Silver Bracelet", "800 UAH", imageResId = R.drawable.silver_bracelet, category = "Bracelets", weight = "7 g", metal = "Silver", gender = "Female", size = "-"),
+                Product("Pearl Earrings", "950 UAH", imageResId = R.drawable.pearl_earrings, category = "Earrings", weight = "3 g", metal = "Silver", gender = "Female", size = "-"),
+                Product("Diamond Pendant", "8000 UAH", imageResId = R.drawable.diamond_pendant, category = "Pendants", weight = "10 g", metal = "Gold", gender = "Female", size = "-"),
+                Product("Rose Brooch", "450 UAH", imageResId = R.drawable.rose_brooch, category = "Brooches", weight = "2 g", metal = "Silver", gender = "Female", size = "-"),
+                Product("Men's Watch Casio", "3500 UAH", imageResId = R.drawable.mens_watch, category = "Watches", weight = "50 g", metal = "Metal", gender = "Male", size = "-"),
+                Product("Women's Watch Casio", "3200 UAH", imageResId = R.drawable.womens_watch, category = "Watches", weight = "45 g", metal = "Metal", gender = "Female", size = "-"),
+                Product("Stone Necklace", "1800 UAH", imageResId = R.drawable.stone_necklace, category = "Necklaces", weight = "8 g", metal = "Silver", gender = "Female", size = "-"),
+                Product("Silver Ring", "700 UAH", imageResId = R.drawable.silver_ring, category = "Rings", weight = "4 g", metal = "Silver", gender = "Female", size = "16"),
+                Product("Beaded Bracelet", "650 UAH", imageResId = R.drawable.beaded_bracelet, category = "Bracelets", weight = "5 g", metal = "Silver", gender = "Female", size = "-")
             )
         )
 
+        // Adapter з click listener
         adapter = ProductAdapter(productList) { product ->
             val intent = Intent(this, ProductDetailActivity::class.java)
             intent.putExtra("name", product.name)
             intent.putExtra("price", product.price)
-            intent.putExtra("imageResId", product.imageResId)
+            intent.putExtra("category", product.category)
+            intent.putExtra("weight", product.weight)
+            intent.putExtra("metal", product.metal)
+            intent.putExtra("gender", product.gender)
+            intent.putExtra("size", product.size)
+
+            // Відправляємо imageUri або imageResId
+            if (product.imageUri != null) {
+                intent.putExtra("imageUri", product.imageUri.toString())
+            } else if (product.imageResId != null) {
+                intent.putExtra("imageResId", product.imageResId)
+            }
             startActivity(intent)
         }
 
@@ -79,9 +91,14 @@ class ProductsActivity : AppCompatActivity() {
             .setView(dialogView)
             .setPositiveButton("Add") { _, _ ->
                 val newProduct = Product(
-                    etName.text.toString(),
-                    etPrice.text.toString(),
-                    selectedImageUri ?: Uri.parse("android.resource://${packageName}/${R.drawable.ic_launcher_foreground}")
+                    name = etName.text.toString(),
+                    price = etPrice.text.toString(),
+                    imageUri = selectedImageUri,
+                    category = "Custom",
+                    weight = "-",
+                    metal = "-",
+                    gender = "-",
+                    size = "-"
                 )
                 productList.add(newProduct)
                 adapter.notifyItemInserted(productList.size - 1)
@@ -97,7 +114,8 @@ class ProductsActivity : AppCompatActivity() {
             .setTitle("Choose Image Source")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> openCamera()1 -> openGallery()
+                    0 -> openCamera()
+                    1 -> openGallery()
                 }
             }.show()
     }
@@ -142,11 +160,7 @@ class ProductsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100) {
             if (grantResults.any { it != PackageManager.PERMISSION_GRANTED }) {

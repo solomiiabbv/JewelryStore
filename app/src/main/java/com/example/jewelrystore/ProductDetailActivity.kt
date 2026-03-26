@@ -15,6 +15,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
         val btnClose = findViewById<ImageButton>(R.id.btnClose)
         val ivProduct = findViewById<ImageView>(R.id.ivProductDetail)
+
         val tvName = findViewById<TextView>(R.id.tvName)
         val tvPrice = findViewById<TextView>(R.id.tvPrice)
         val tvWeight = findViewById<TextView>(R.id.tvWeight)
@@ -29,9 +30,14 @@ class ProductDetailActivity : AppCompatActivity() {
         tvGender.text = "Gender: " + intent.getStringExtra("gender")
         tvSize.text = "Size: " + intent.getStringExtra("size")
 
-        val imageUri = intent.getStringExtra("imageUri")
-        if (!imageUri.isNullOrEmpty()) {
-            ivProduct.setImageURI(Uri.parse(imageUri))
+        // Показуємо картинку
+        val imageUriString = intent.getStringExtra("imageUri")
+        val imageResId = intent.getIntExtra("imageResId", 0)
+
+        if (imageUriString != null) {
+            ivProduct.setImageURI(Uri.parse(imageUriString))
+        } else if (imageResId != 0) {
+            ivProduct.setImageResource(imageResId)
         } else {
             ivProduct.setImageResource(R.drawable.ic_launcher_foreground)
         }
