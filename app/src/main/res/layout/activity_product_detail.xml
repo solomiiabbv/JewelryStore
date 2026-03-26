@@ -9,49 +9,65 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Кнопка закриття -->
         <ImageButton
             android:id="@+id/btnClose"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/ic_close"
             android:contentDescription="Закрити"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"/>
+            android:background="?attr/selectableItemBackgroundBorderless"/>
 
+        <!-- Картинка товару квадратна -->
         <ImageView
             android:id="@+id/ivProductDetail"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
-            android:src="@drawable/gold_ring"
             android:contentDescription="Фото товару"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginBottom="16dp"/>
 
-        <TextView android:id="@+id/tvName"
+        <!-- Інформація про товар -->
+        <TextView
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
 
-        <TextView android:id="@+id/tvPrice"
+        <TextView
+            android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
 
-        <TextView android:id="@+id/tvWeight"
+        <TextView
+            android:id="@+id/tvWeight"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
 
-        <TextView android:id="@+id/tvMetal"
+        <TextView
+            android:id="@+id/tvMetal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
 
-        <TextView android:id="@+id/tvGender"
+        <TextView
+            android:id="@+id/tvGender"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
 
-        <TextView android:id="@+id/tvSize"
+        <TextView
+            android:id="@+id/tvSize"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
 
     </LinearLayout>
 </ScrollView>
