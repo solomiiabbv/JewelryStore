@@ -15,7 +15,6 @@ class ProductDetailActivity : AppCompatActivity() {
 
         val btnClose = findViewById<ImageButton>(R.id.btnClose)
         val ivProduct = findViewById<ImageView>(R.id.ivProductDetail)
-
         val tvName = findViewById<TextView>(R.id.tvName)
         val tvPrice = findViewById<TextView>(R.id.tvPrice)
         val tvWeight = findViewById<TextView>(R.id.tvWeight)
@@ -31,8 +30,10 @@ class ProductDetailActivity : AppCompatActivity() {
         tvSize.text = "Size: " + intent.getStringExtra("size")
 
         val imageUri = intent.getStringExtra("imageUri")
-        if (imageUri != null) {
+        if (!imageUri.isNullOrEmpty()) {
             ivProduct.setImageURI(Uri.parse(imageUri))
+        } else {
+            ivProduct.setImageResource(R.drawable.ic_launcher_foreground)
         }
 
         btnClose.setOnClickListener { finish() }
