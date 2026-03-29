@@ -1,12 +1,10 @@
 package com.example.jewelrystore
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -25,44 +23,42 @@ class MainActivity : AppCompatActivity() {
         val btnProfile = findViewById<Button>(R.id.btnProfile)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
-        loadUserData() // завантажуємо ім'я та фото
+        // Отримуємо ім’я з SharedPreferences
+        updateGreeting()
 
+        // Клік по фото адміністратора (можна відкрити профіль)
+        ivAdminPhoto.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        // Відкриваємо список товарів
         btnManageProducts.setOnClickListener {
             startActivity(Intent(this, ProductsActivity::class.java))
         }
 
+        // Відкриваємо профіль адміністратора
         btnProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
+        // Вихід
         btnLogout.setOnClickListener {
-            getSharedPreferences("auth", MODE_PRIVATE).edit()
-                .putBoolean("isAuthorized", false).apply()
+            val pref = getSharedPreferences("auth", MODE_PRIVATE)
+            pref.edit().putBoolean("isAuthorized", false).apply()
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
-
-        ivAdminPhoto.setOnClickListener {
-            Toast.makeText(this, "Профіль адміністратора", Toast.LENGTH_SHORT).show()
-        }
     }
 
-    // Оновлюємо дані при поверненні на головний екран
     override fun onResume() {
         super.onResume()
-        loadUserData()
+        // Оновлюємо привітання при поверненні з ProfileActivity
+        updateGreeting()
     }
 
-    private fun loadUserData() {
-        val prefs = getSharedPreferences("user", MODE_PRIVATE)
-        val firstName = prefs.getString("firstName", "Адміністратор")
+    private fun updateGreeting() {
+        val userPref = getSharedPreferences("user", MODE_PRIVATE)
+        val firstName = userPref.getString("firstName", "Адміністратор")
         tvGreeting.text = "Привіт, $firstName!"
-
-        val photoUriString = prefs.getString("photoUri", null)
-        if (photoUriString != null) {
-            ivAdminPhoto.setImageURI(Uri.parse(photoUriString))
-        } else {
-            ivAdminPhoto.setImageResource(R.drawable.ic_admin_placeholder)
-        }
     }
-}
+}g
