@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         val ivLogo = findViewById<ImageView>(R.id.ivLogo)
 
         val btnManageProducts = findViewById<Button>(R.id.btnManageProducts)
-        val btnInfoList = findViewById<Button>(R.id.btnInfoList)
         val btnProfile = findViewById<Button>(R.id.btnProfile)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
@@ -33,12 +32,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Інформаційний список (поки залишимо Toast)
-        btnInfoList.setOnClickListener {
-            Toast.makeText(this, "Інформаційний список", Toast.LENGTH_SHORT).show()
-        }
-
-        // Профіль адміністратора (можна потім зробити окремий Activity)
+        // Профіль адміністратора
         btnProfile.setOnClickListener {
             Toast.makeText(this, "Профіль адміністратора", Toast.LENGTH_SHORT).show()
         }
