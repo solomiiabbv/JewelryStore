@@ -4,12 +4,12 @@ import android.net.Uri
 import java.io.Serializable
 
 data class Product(
-    val name: String,
-    val price: String,
-    val imageUri: Uri,
-    val category: String = "-",
-    val weight: String = "-",
-    val metal: String = "-",
-    val gender: String = "-",
-    val size: String = "-"
+    var name: String,
+    var price: String,
+    var imageUri: Uri,
+    var category: String = "-",
+    var weight: String = "-",
+    var metal: String = "-",
+    var gender: String = "-",
+    var size: String = "-"
 ) : Serializable
