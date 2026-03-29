@@ -65,3 +65,4 @@ class MainActivity : AppCompatActivity() {
             ivAdminPhoto.setImageResource(R.drawable.ic_admin_placeholder)
         }
     }
+}
