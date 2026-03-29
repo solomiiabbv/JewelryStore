@@ -34,9 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         // Профіль адміністратора
         btnProfile.setOnClickListener {
-            Toast.makeText(this, "Профіль адміністратора", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
-
         // Вихід
         btnLogout.setOnClickListener {
             val pref = getSharedPreferences("auth", MODE_PRIVATE)
