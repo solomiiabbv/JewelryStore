@@ -61,4 +61,4 @@ class MainActivity : AppCompatActivity() {
         val firstName = userPref.getString("firstName", "Адміністратор")
         tvGreeting.text = "Привіт, $firstName!"
     }
-}g
+}
