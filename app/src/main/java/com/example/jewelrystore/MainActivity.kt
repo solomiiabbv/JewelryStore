@@ -1,6 +1,7 @@
 package com.example.jewelrystore
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -10,42 +11,57 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var tvGreeting: TextView
+    private lateinit var ivAdminPhoto: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val tvGreeting = findViewById<TextView>(R.id.tvGreeting)
-        val ivLogo = findViewById<ImageView>(R.id.ivLogo)
+        tvGreeting = findViewById(R.id.tvGreeting)
+        ivAdminPhoto = findViewById(R.id.ivAdminPhoto)
 
         val btnManageProducts = findViewById<Button>(R.id.btnManageProducts)
         val btnProfile = findViewById<Button>(R.id.btnProfile)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
-        // Отримуємо ім’я з реєстрації
-        val userPref = getSharedPreferences("user", MODE_PRIVATE)
-        val firstName = userPref.getString("firstName", "Адміністратор")
-        tvGreeting.text = "Привіт, $firstName!"
+        loadUserData() // завантажуємо ім'я та фото
 
-        // Відкриваємо список товарів
         btnManageProducts.setOnClickListener {
-            val intent = Intent(this, ProductsActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ProductsActivity::class.java))
         }
 
-        // Профіль адміністратора
         btnProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
-        // Вихід
+
         btnLogout.setOnClickListener {
-            val pref = getSharedPreferences("auth", MODE_PRIVATE)
-            pref.edit().putBoolean("isAuthorized", false).apply()
+            getSharedPreferences("auth", MODE_PRIVATE).edit()
+                .putBoolean("isAuthorized", false).apply()
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 
-        ivLogo.setOnClickListener {
-            Toast.makeText(this, "Ювелірний магазин", Toast.LENGTH_SHORT).show()
+        ivAdminPhoto.setOnClickListener {
+            Toast.makeText(this, "Профіль адміністратора", Toast.LENGTH_SHORT).show()
         }
     }
-}
+
+    // Оновлюємо дані при поверненні на головний екран
+    override fun onResume() {
+        super.onResume()
+        loadUserData()
+    }
+
+    private fun loadUserData() {
+        val prefs = getSharedPreferences("user", MODE_PRIVATE)
+        val firstName = prefs.getString("firstName", "Адміністратор")
+        tvGreeting.text = "Привіт, $firstName!"
+
+        val photoUriString = prefs.getString("photoUri", null)
+        if (photoUriString != null) {
+            ivAdminPhoto.setImageURI(Uri.parse(photoUriString))
+        } else {
+            ivAdminPhoto.setImageResource(R.drawable.ic_admin_placeholder)
+        }
+    }
