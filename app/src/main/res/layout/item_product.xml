@@ -1,39 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:padding="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground"
-        android:background="@android:color/darker_gray"
-        android:contentDescription="Product image"/>
+        android:src="@drawable/ic_launcher_foreground" />
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_marginStart="8dp"
         android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:paddingStart="8dp">
 
         <TextView
             android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Product Name"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvPrice"
-            android:text="Price"
-            android:textSize="14sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textSize="14sp"/>
     </LinearLayout>
+
+    <!-- Кнопка редагування -->
+    <ImageButton
+        android:id="@+id/btnEdit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Edit"
+        android:src="@drawable/ic_edit"
+        app:tint="@android:color/black"/>
+
+    <!-- Кнопка видалення -->
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Delete"
+        android:src="@drawable/ic_delete"
+        app:tint="@android:color/holo_red_dark"/>
+
 </LinearLayout>

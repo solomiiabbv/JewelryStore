@@ -1,21 +1,25 @@
 package com.example.jewelrystore
 
+import android.app.AlertDialog
+import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class ProductAdapter(
-    private val products: List<Product>,
+    private val products: MutableList<Product>,
     private val onClick: (Product) -> Unit,
     private val onEditClick: (Product, Int) -> Unit,
-    private val onDeleteClick: (Int) -> Unit
+    private val onDeleteClick: (Product, Int) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val ivImage: ImageView = view.findViewById(R.id.ivImage)
         val tvName: TextView = view.findViewById(R.id.tvName)
         val tvPrice: TextView = view.findViewById(R.id.tvPrice)
@@ -37,8 +41,21 @@ class ProductAdapter(
         holder.ivImage.setImageURI(product.imageUri)
 
         holder.itemView.setOnClickListener { onClick(product) }
-        holder.btnEdit.setOnClickListener { onEditClick(product, position) }
-        holder.btnDelete.setOnClickListener { onDeleteClick(position) }
+
+        holder.btnEdit.setOnClickListener {
+            onEditClick(product, position)
+        }
+
+        holder.btnDelete.setOnClickListener {
+            AlertDialog.Builder(holder.itemView.context)
+                .setTitle("Видалити товар?")
+                .setMessage("Ви впевнені, що хочете видалити цей товар?")
+                .setPositiveButton("Так") { _, _ ->
+                    onDeleteClick(product, position)
+                }
+                .setNegativeButton("Ні", null)
+                .show()
+        }
     }
 
     override fun getItemCount() = products.size
