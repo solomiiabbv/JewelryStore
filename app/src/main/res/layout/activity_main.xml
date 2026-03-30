@@ -1,57 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
     android:background="@color/white">
 
-    <!-- Логотип магазину -->
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_store"
-        android:contentDescription="Логотип магазину"
-        android:layout_marginBottom="16dp"/>
-
-    <ImageView
-        android:id="@+id/ivAdminPhoto"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/gold_ring"
-        android:background="@drawable/bg_circle"
-        android:scaleType="centerCrop"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Привітання -->
-    <TextView
-        android:id="@+id/tvGreeting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ivLogo"
-        android:layout_centerHorizontal="true"
-        android:text="Привіт, Адміністратор!"
-        android:textSize="22sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Кнопки -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvGreeting"
         android:orientation="vertical"
-        android:layout_marginTop="24dp">
+        android:gravity="center_horizontal">
 
+        <!-- Логотип магазину -->
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_store"
+            android:contentDescription="Логотип магазину"
+            android:scaleType="fitCenter"/>
+
+        <!-- Привітання -->
+        <TextView
+            android:id="@+id/tvGreeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Привіт, Адміністратор!"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Кнопки жовтого кольору -->
         <Button
             android:id="@+id/btnManageProducts"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Керування товарами"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/gold"
             android:textColor="@color/white"/>
 
         <Button
@@ -60,7 +47,7 @@
             android:layout_height="56dp"
             android:text="Профіль адміністратора"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/gold"
             android:textColor="@color/white"/>
 
         <Button
@@ -68,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Вихід"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/gold"
             android:textColor="@color/white"/>
     </LinearLayout>
-</RelativeLayout>
+</ScrollView>

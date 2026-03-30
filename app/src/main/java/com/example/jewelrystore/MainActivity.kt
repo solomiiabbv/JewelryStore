@@ -10,33 +10,25 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var tvGreeting: TextView
-    private lateinit var ivAdminPhoto: ImageView
+    private lateinit var ivLogo: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         tvGreeting = findViewById(R.id.tvGreeting)
-        ivAdminPhoto = findViewById(R.id.ivAdminPhoto)
+        ivLogo = findViewById(R.id.ivLogo)
 
         val btnManageProducts = findViewById<Button>(R.id.btnManageProducts)
         val btnProfile = findViewById<Button>(R.id.btnProfile)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
-
-        // Отримуємо ім’я з SharedPreferences
-        updateGreeting()
-
-        // Клік по фото адміністратора (можна відкрити профіль)
-        ivAdminPhoto.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-        }
 
         // Відкриваємо список товарів
         btnManageProducts.setOnClickListener {
             startActivity(Intent(this, ProductsActivity::class.java))
         }
 
-        // Відкриваємо профіль адміністратора
+        // Профіль адміністратора
         btnProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
@@ -48,17 +40,21 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+
+        // Завантаження імені адміністратора
+        loadUserData()
+    }
+
+    private fun loadUserData() {
+        val userPref = getSharedPreferences("user", MODE_PRIVATE)
+        val firstName = userPref.getString("firstName", "Адміністратор")
+        tvGreeting.text = "Привіт, $firstName!"
+        // Фото на головній сторінці залишаємо фіксованим логотипом
+        ivLogo.setImageResource(R.drawable.ic_store)
     }
 
     override fun onResume() {
         super.onResume()
-        // Оновлюємо привітання при поверненні з ProfileActivity
-        updateGreeting()
-    }
-
-    private fun updateGreeting() {
-        val userPref = getSharedPreferences("user", MODE_PRIVATE)
-        val firstName = userPref.getString("firstName", "Адміністратор")
-        tvGreeting.text = "Привіт, $firstName!"
+        loadUserData()
     }
 }
