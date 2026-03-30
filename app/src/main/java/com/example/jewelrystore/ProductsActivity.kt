@@ -66,7 +66,6 @@ class ProductsActivity : AppCompatActivity() {
         rvProducts.adapter = adapter
 
         btnClose.setOnClickListener { finish() }
-
         btnAdd.setBackgroundColor(resources.getColor(android.R.color.holo_orange_light))
         btnAdd.setOnClickListener { showAddProductDialog() }
     }
@@ -89,15 +88,15 @@ class ProductsActivity : AppCompatActivity() {
             .setView(dialogView)
             .setPositiveButton("Додати") { _, _ ->
                 val newProduct = Product(
-                    etName.text.toString(),
-                    etPrice.text.toString(),
+                    etName.text.toString().trim(),
+                    etPrice.text.toString().trim(),
                     selectedImageUri
                         ?: Uri.parse("android.resource://${packageName}/${R.drawable.ic_launcher_foreground}"),
-                    etCategory.text.toString(),
-                    etWeight.text.toString(),
-                    etMetal.text.toString(),
-                    etGender.text.toString(),
-                    etSize.text.toString()
+                    etCategory.text.toString().trim(),
+                    etWeight.text.toString().trim(),
+                    etMetal.text.toString().trim(),
+                    etGender.text.toString().trim(),
+                    etSize.text.toString().trim()
                 )
                 productList.add(newProduct)
                 adapter.notifyItemInserted(productList.size - 1)
@@ -119,7 +118,6 @@ class ProductsActivity : AppCompatActivity() {
         val etSize = dialogView.findViewById<EditText>(R.id.etSize)
         val ivSelectImage = dialogView.findViewById<ImageView>(R.id.ivSelectImage)
 
-        // Заповнюємо старі значення
         etName.setText(product.name)
         etPrice.setText(product.price)
         etCategory.setText(product.category)
@@ -136,15 +134,15 @@ class ProductsActivity : AppCompatActivity() {
             .setView(dialogView)
             .setPositiveButton("Зберегти") { _, _ ->
                 val editedProduct = Product(
-                    etName.text.toString(),
-                    etPrice.text.toString(),
+                    etName.text.toString().trim(),
+                    etPrice.text.toString().trim(),
                     selectedImageUri
                         ?: Uri.parse("android.resource://${packageName}/${R.drawable.ic_launcher_foreground}"),
-                    etCategory.text.toString(),
-                    etWeight.text.toString(),
-                    etMetal.text.toString(),
-                    etGender.text.toString(),
-                    etSize.text.toString()
+                    etCategory.text.toString().trim(),
+                    etWeight.text.toString().trim(),
+                    etMetal.text.toString().trim(),
+                    etGender.text.toString().trim(),
+                    etSize.text.toString().trim()
                 )
                 productList[position] = editedProduct
                 adapter.notifyItemChanged(position)
@@ -199,9 +197,8 @@ class ProductsActivity : AppCompatActivity() {
 
     private fun openGallery() {
         galleryLauncher.launch("image/*")
-    }
-
-    private fun checkPermissions() {val permissions = mutableListOf<String>()
+    }private fun checkPermissions() {
+        val permissions = mutableListOf<String>()
         if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             permissions.add(android.Manifest.permission.CAMERA)
         }
@@ -239,16 +236,16 @@ class ProductsActivity : AppCompatActivity() {
         val serializedList = prefs.getString(KEY_PRODUCTS, "")
 
         val startProducts = listOf(
-            Product("Gold Ring", "1200 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.gold_ring}"), "Rings", "5 g", "Gold", "Female", "16"),
-            Product("Silver Bracelet", "800 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.silver_bracelet}"), "Bracelets", "7 g", "Silver", "Female", "onesize"),
-            Product("Pearl Earrings", "950 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.pearl_earrings}"), "Earrings", "3 g", "Silver", "Female", "onesize"),
-            Product("Diamond Pendant", "8000 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.diamond_pendant}"), "Pendants", "10 g", "Gold", "Female", "onesize"),
-            Product("Rose Brooch", "450 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.rose_brooch}"), "Brooches", "2 g", "Silver", "Female", "onesize"),
-            Product("Men's Watch Casio", "3500 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.mens_watch}"), "Watches", "50 g", "Metal", "Male", "onesize"),
-            Product("Women's Watch Casio", "3200 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.womens_watch}"), "Watches", "45 g", "Metal", "Female", "onesize"),
-            Product("Stone Necklace", "1800 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.stone_necklace}"), "Necklaces", "8 g", "Silver", "Female", "onesize"),
-            Product("Silver Ring", "700 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.silver_ring}"), "Rings", "4 g", "Silver", "Female", "16"),
-            Product("Beaded Bracelet", "650 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.beaded_bracelet}"), "Bracelets", "5 g", "Silver", "Female", "onesize")
+            Product("Gold Ring","1200 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.gold_ring}"),"Rings","5 g","Gold","Female","16"),
+            Product("Silver Bracelet","800 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.silver_bracelet}"),"Bracelets","7 g","Silver","Female","onesize"),
+            Product("Pearl Earrings","950 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.pearl_earrings}"),"Earrings","3 g","Silver","Female","onesize"),
+            Product("Diamond Pendant","8000 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.diamond_pendant}"),"Pendants","10 g","Gold","Female","onesize"),
+            Product("Rose Brooch","450 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.rose_brooch}"),"Brooches","2 g","Silver","Female","onesize"),
+            Product("Men's Watch Casio","3500 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.mens_watch}"),"Watches","50 g","Metal","Male","onesize"),
+            Product("Women's Watch Casio","3200 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.womens_watch}"),"Watches","45 g","Metal","Female","onesize"),
+            Product("Stone Necklace","1800 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.stone_necklace}"),"Necklaces","8 g","Silver","Female","onesize"),
+            Product("Silver Ring","700 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.silver_ring}"),"Rings","4 g","Silver","Female","16"),
+            Product("Beaded Bracelet","650 UAH",Uri.parse("android.resource://${packageName}/${R.drawable.beaded_bracelet}"),"Bracelets","5 g","Silver","Female","onesize")
         )
 
         productList.clear()
@@ -258,17 +255,17 @@ class ProductsActivity : AppCompatActivity() {
             for (item in items) {
                 val parts = item.split("|")
                 if (parts.size == 8) {
-                    val uri = Uri.parse(parts[2])
+                    val name = parts[0].trimStart(';', ' ')
                     productList.add(
-                        Product(parts[0], parts[1], uri, parts[3], parts[4], parts[5], parts[6], parts[7])
+                        Product(name, parts[1], Uri.parse(parts[2]), parts[3], parts[4], parts[5], parts[6], parts[7])
                     )
                 }
             }
         }
 
-        // Додаємо стартові товари, яких ще нема
         val existingNames = productList.map { it.name }
         startProducts.forEach { if (!existingNames.contains(it.name)) productList.add(it) }
-        saveProducts() // зберігаємо повний список
+
+        saveProducts()
     }
 }
