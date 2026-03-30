@@ -19,7 +19,6 @@ class ProductsActivity : AppCompatActivity() {
 
     private val productList = mutableListOf<Product>()
     private lateinit var adapter: ProductAdapter
-    private var selectedImageUri: Uri? = null
 
     private val PREFS_NAME = "ProductsPrefs"
     private val KEY_PRODUCTS = "products"
@@ -36,7 +35,7 @@ class ProductsActivity : AppCompatActivity() {
         tvTitle.text = "Список товарів"
 
         checkPermissions()
-        loadProducts() // завантажуємо товари
+        loadProducts()
 
         adapter = ProductAdapter(
             productList,
@@ -82,14 +81,12 @@ class ProductsActivity : AppCompatActivity() {
         val etSize = dialogView.findViewById<EditText>(R.id.etSize)
         val ivSelectImage = dialogView.findViewById<ImageView>(R.id.ivSelectImage)
 
-        var tempImageUri: Uri? = null // локальна змінна для діалогу
+        var selectedImageUri: Uri? = null
 
-        ivSelectImage.setOnClickListener {
-            showImageSourceOptions { uri ->
-                tempImageUri = uri
-                ivSelectImage.setImageURI(uri)
-            }
-        }
+        ivSelectImage.setOnClickListener { showImageSourceOptions { uri ->
+            selectedImageUri = uri
+            ivSelectImage.setImageURI(uri)
+        } }
 
         AlertDialog.Builder(this)
             .setTitle("Додати товар")
@@ -98,7 +95,9 @@ class ProductsActivity : AppCompatActivity() {
                 val newProduct = Product(
                     etName.text.toString(),
                     etPrice.text.toString(),
-                    tempImageUri ?: Uri.parse("android.resource://${packageName}/${R.drawable.ic_launcher_foreground}"),etCategory.text.toString(),
+                    selectedImageUri
+                        ?: Uri.parse("android.resource://${packageName}/${R.drawable.ic_launcher_foreground}"),
+                    etCategory.text.toString(),
                     etWeight.text.toString(),
                     etMetal.text.toString(),
                     etGender.text.toString(),
@@ -123,8 +122,6 @@ class ProductsActivity : AppCompatActivity() {
         val etSize = dialogView.findViewById<EditText>(R.id.etSize)
         val ivSelectImage = dialogView.findViewById<ImageView>(R.id.ivSelectImage)
 
-        var tempImageUri: Uri? = product.imageUri // локальна змінна для діалогу
-
         // Заповнюємо старі значення
         etName.setText(product.name)
         etPrice.setText(product.price)
@@ -135,12 +132,12 @@ class ProductsActivity : AppCompatActivity() {
         etSize.setText(product.size)
         ivSelectImage.setImageURI(product.imageUri)
 
-        ivSelectImage.setOnClickListener {
-            showImageSourceOptions { uri ->
-                tempImageUri = uri
-                ivSelectImage.setImageURI(uri)
-            }
-        }
+        var dialogSelectedImageUri: Uri? = product.imageUri
+
+        ivSelectImage.setOnClickListener { showImageSourceOptions { uri ->
+            dialogSelectedImageUri = uri
+            ivSelectImage.setImageURI(uri)
+        } }
 
         AlertDialog.Builder(this)
             .setTitle("Редагувати товар")
@@ -149,7 +146,8 @@ class ProductsActivity : AppCompatActivity() {
                 val editedProduct = Product(
                     etName.text.toString(),
                     etPrice.text.toString(),
-                    tempImageUri ?: product.imageUri,
+                    dialogSelectedImageUri
+                        ?: Uri.parse("android.resource://${packageName}/${R.drawable.ic_launcher_foreground}"),
                     etCategory.text.toString(),
                     etWeight.text.toString(),
                     etMetal.text.toString(),
@@ -164,20 +162,20 @@ class ProductsActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun showImageSourceOptions(callback: (Uri) -> Unit) {
+    private fun showImageSourceOptions(onImageSelected: (Uri) -> Unit) {
         val options = arrayOf("Camera", "Gallery")
         AlertDialog.Builder(this)
             .setTitle("Оберіть джерело фото")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> openCamera(callback)
-                    1 -> openGallery(callback)
+                    0 -> openCamera(onImageSelected)
+                    1 -> openGallery(onImageSelected)
                 }
             }.show()
     }
 
-    private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private fun openCamera(onImageSelected: (Uri) -> Unit) {
+        val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val bitmap = result.data?.extras?.get("data") as Bitmap
                 val tempUri = Uri.parse(
@@ -188,28 +186,19 @@ class ProductsActivity : AppCompatActivity() {
                         null
                     )
                 )
-                cameraCallback?.invoke(tempUri)
+                onImageSelected(tempUri)
             }
         }
-    private var cameraCallback: ((Uri) -> Unit)? = null
-    private fun openCamera(callback: (Uri) -> Unit) {
-        cameraCallback = callback
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraLauncher.launch(intent)
     }
 
-    private val galleryLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->if (uri != null) {
-            galleryCallback?.invoke(uri)
+    private fun openGallery(onImageSelected: (Uri) -> Unit) {
+        val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) onImageSelected(uri)
         }
-        }
-    private var galleryCallback: ((Uri) -> Unit)? = null
-    private fun openGallery(callback: (Uri) -> Unit) {
-        galleryCallback = callback
         galleryLauncher.launch("image/*")
-    }
-
-    private fun checkPermissions() {
+    }private fun checkPermissions() {
         val permissions = mutableListOf<String>()
         if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             permissions.add(android.Manifest.permission.CAMERA)
@@ -217,9 +206,7 @@ class ProductsActivity : AppCompatActivity() {
         if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             permissions.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
         }
-        if (permissions.isNotEmpty()) {
-            requestPermissions(permissions.toTypedArray(), 100)
-        }
+        if (permissions.isNotEmpty()) requestPermissions(permissions.toTypedArray(), 100)
     }
 
     override fun onRequestPermissionsResult(
@@ -247,6 +234,14 @@ class ProductsActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val serializedList = prefs.getString(KEY_PRODUCTS, "")
 
+        val startProducts = listOf(
+            Product("Gold Ring", "1200 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.gold_ring}"), "Rings", "5 g", "Gold", "Female", "16"),
+            Product("Silver Bracelet", "800 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.silver_bracelet}"), "Bracelets", "7 g", "Silver", "Female", "onesize"),
+            Product("Pearl Earrings", "950 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.pearl_earrings}"), "Earrings", "3 g", "Silver", "Female", "onesize"),
+            Product("Diamond Pendant", "8000 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.diamond_pendant}"), "Pendants", "10 g", "Gold", "Female", "onesize"),
+            Product("Rose Brooch", "450 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.rose_brooch}"), "Brooches", "2 g", "Silver", "Female", "onesize")
+        )
+
         productList.clear()
 
         if (!serializedList.isNullOrEmpty()) {
@@ -271,21 +266,9 @@ class ProductsActivity : AppCompatActivity() {
         }
 
         // Додаємо стартові товари, яких ще нема
-        val startProducts = listOf(
-            Product("Gold Ring","1200 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.gold_ring}"),"Rings","5 g","Gold","Female","16"),
-            Product("Silver Bracelet","800 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.silver_bracelet}"),"Bracelets","7 g","Silver","Female","onesize"),
-            Product("Pearl Earrings","950 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.pearl_earrings}"),"Earrings","3 g","Silver","Female","onesize"),
-            Product("Diamond Pendant","8000 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.diamond_pendant}"),"Pendants","10 g","Gold","Female","onesize"),
-            Product("Rose Brooch","450 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.rose_brooch}"),"Brooches","2 g","Silver","Female","onesize"),
-            Product("Men's Watch Casio","3500 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.mens_watch}"),"Watches","50 g","Metal","Male","onesize"),
-            Product("Women's Watch Casio","3200 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.womens_watch}"),"Watches","45 g","Metal","Female","onesize"),
-            Product("Stone Necklace","1800 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.stone_necklace}"),"Necklaces","8 g","Silver","Female","onesize"),Product("Silver Ring","700 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.silver_ring}"),"Rings","4 g","Silver","Female","16"),
-            Product("Beaded Bracelet","650 UAH", Uri.parse("android.resource://${packageName}/${R.drawable.beaded_bracelet}"),"Bracelets","5 g","Silver","Female","onesize")
-        )
-
         val existingNames = productList.map { it.name }
         startProducts.forEach { if (!existingNames.contains(it.name)) productList.add(it) }
 
-        adapter.notifyDataSetChanged()
+        saveProducts()
     }
 }
