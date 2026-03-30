@@ -27,8 +27,10 @@
             android:layout_height="120dp"
             android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
-            android:background="@drawable/bg_circle"
-            android:src="@drawable/ic_admin_placeholder"/>
+            android:src="@drawable/ic_admin_placeholder"
+            android:clipToOutline="true"
+            android:outlineProvider="background"
+            android:background="@drawable/circle_mask"/>
 
         <EditText
             android:id="@+id/etName"
