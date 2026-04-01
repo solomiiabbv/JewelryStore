@@ -6,7 +6,7 @@ import java.io.Serializable
 data class Product(
     var name: String,
     var price: String,
-    var imageUri: Uri,
+    val imageResId: Int,
     var category: String = "-",
     var weight: String = "-",
     var metal: String = "-",

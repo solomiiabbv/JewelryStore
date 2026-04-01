@@ -1,7 +1,6 @@
 package com.example.jewelrystore
 
 import android.app.AlertDialog
-import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class ProductAdapter(
@@ -32,27 +30,23 @@ class ProductAdapter(
             .inflate(R.layout.item_product, parent, false)
         return ProductViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = products[position]
 
         holder.tvName.text = product.name
         holder.tvPrice.text = product.price
-        holder.ivImage.setImageURI(product.imageUri)
+
+        // ЗМІНА ТУТ: використовуємо setImageResource для Int (ID з drawable)
+        holder.ivImage.setImageResource(product.imageResId)
 
         holder.itemView.setOnClickListener { onClick(product) }
-
-        holder.btnEdit.setOnClickListener {
-            onEditClick(product, position)
-        }
+        holder.btnEdit.setOnClickListener { onEditClick(product, position) }
 
         holder.btnDelete.setOnClickListener {
             AlertDialog.Builder(holder.itemView.context)
                 .setTitle("Видалити товар?")
-                .setMessage("Ви впевнені, що хочете видалити цей товар?")
-                .setPositiveButton("Так") { _, _ ->
-                    onDeleteClick(product, position)
-                }
+                .setMessage("Ви впевнені?")
+                .setPositiveButton("Так") { _, _ -> onDeleteClick(product, position) }
                 .setNegativeButton("Ні", null)
                 .show()
         }

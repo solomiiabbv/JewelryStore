@@ -1,52 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Кнопка закриття зверху по центру -->
     <ImageButton
         android:id="@+id/btnClose"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:padding="16dp"
-        android:src="@drawable/ic_close"
-        android:contentDescription="Close"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true" />
+        android:contentDescription="Close"
+        android:padding="16dp"
+        android:src="@drawable/ic_close" />
 
-    <!-- Назва списку товарів -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
         android:text="Список товарів"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"/>
+        android:textStyle="bold" />
 
-    <!-- RecyclerView для товарів -->
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:drawable/editbox_background"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawablePadding="8dp"
+        android:hint="Пошук товару..."
+        android:padding="12dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="8dp"
+        android:layout_weight="1" />
 
-    <!-- Кнопка Додати товар -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Додати товар"
-        android:backgroundTint="#FFD700"
-        android:textColor="@android:color/black"
-        android:padding="12dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#FFD700"
+        android:padding="12dp"
+        android:text="Додати товар"
+        android:textColor="@android:color/black" />
+
 </LinearLayout>
